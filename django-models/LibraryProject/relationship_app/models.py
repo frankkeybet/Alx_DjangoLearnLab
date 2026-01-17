@@ -1,7 +1,8 @@
 from django.db import models
+from bookshelf.models import Book
 
 # Create your models here.
-from django.db import models
+
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
@@ -32,3 +33,13 @@ class Librarian(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class BookPermissionProxy(Book):
+    class Meta:
+        proxy = True
+        permissions = [
+            ("can_add_book", "Can add book"),
+            ("can_change_book", "Can change book"),
+            ("can_delete_book", "Can delete book"),
+        ]

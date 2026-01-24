@@ -14,10 +14,18 @@ class BookAdmin(admin.ModelAdmin):
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
+    model = CustomUser
+
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('date_of_birth', 'profile_photo')}),
+        ("Additional Information", {
+            "fields": ("date_of_birth", "profile_photo"),
+        }),
     )
+
     add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('date_of_birth', 'profile_photo')}),
+        ("Additional Information", {
+            "fields": ("date_of_birth", "profile_photo"),
+        }),
     )
-    list_display = ('username', 'email', 'first_name', 'last_name', 'date_of_birth', 'is_staff')
+
+    list_display = ("username", "email", "is_staff", "is_active")

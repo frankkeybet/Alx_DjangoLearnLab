@@ -40,6 +40,49 @@ SECURE_CSP = "default-src 'self'; script-src 'self'; style-src 'self';"
 
 ALLOWED_HOSTS = []
 
+# -------------------------------------------------------------------
+# HTTPS & SSL SECURITY SETTINGS
+# -------------------------------------------------------------------
+
+# Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# HTTP Strict Transport Security (HSTS)
+# Instructs browsers to only use HTTPS for this site for 1 year
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+
+# Apply HSTS to all subdomains
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+# Allow domain to be preloaded in browsers' HSTS lists
+SECURE_HSTS_PRELOAD = True
+
+
+# -------------------------------------------------------------------
+# SECURE COOKIE SETTINGS
+# -------------------------------------------------------------------
+
+# Ensure session cookies are sent only over HTTPS
+SESSION_COOKIE_SECURE = True
+
+# Ensure CSRF cookies are sent only over HTTPS
+CSRF_COOKIE_SECURE = True
+
+
+# -------------------------------------------------------------------
+# BROWSER SECURITY HEADERS
+# -------------------------------------------------------------------
+
+# Prevent clickjacking by denying iframe embedding
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent MIME-type sniffing
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable browser XSS protection
+SECURE_BROWSER_XSS_FILTER = True
+
+
 
 # Application definition
 

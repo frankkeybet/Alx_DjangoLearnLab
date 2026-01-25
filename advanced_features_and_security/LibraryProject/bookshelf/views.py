@@ -3,28 +3,22 @@ from django.contrib.auth.decorators import permission_required
 from .models import Book
 from django.http import HttpResponse
 from .forms import BookForm
+from .forms import ExampleForm
+
 
 
 # Create your views here.
 
-@permission_required('bookshelf.can_view', raise_exception=True)
-def book_list(request):
-    books = Book.objects.all()
-    return render(request, 'bookshelf/book_list.html', {'books': books})
-
-
-@permission_required('bookshelf.can_create', raise_exception=True)
-def create_book(request):
+def example_form_view(request):
     if request.method == 'POST':
-        form = BookForm(request.POST)
+        form = ExampleForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('book_list')
     else:
-        form = BookForm()
+        form = ExampleForm()
 
-    response = render(request, 'bookshelf/form_example.html', {'form': form})
-
+    return render(request, 'bookshelf/form_example.html', {'form': form})
     # Content Security Policy header
     response['Content-Security-Policy'] = "default-src 'self'"
 
@@ -49,3 +43,5 @@ def delete_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     book.delete()
     return render(request, 'bookshelf/delete_success.html')
+
+

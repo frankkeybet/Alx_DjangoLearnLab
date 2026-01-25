@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
 from .models import Book
+from django.http import HttpResponse
+from .forms import BookForm
 
 
 # Create your views here.
@@ -14,17 +16,19 @@ def book_list(request):
 @permission_required('bookshelf.can_create', raise_exception=True)
 def create_book(request):
     if request.method == 'POST':
-        title = request.POST.get('title')
-        author = request.POST.get('author')
-        year = request.POST.get('publication_year')
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('book_list')
+    else:
+        form = BookForm()
 
-        Book.objects.create(
-            title=title,
-            author=author,
-            publication_year=year
-        )
+    response = render(request, 'bookshelf/form_example.html', {'form': form})
 
-    return render(request, 'bookshelf/create_book.html')
+    # Content Security Policy header
+    response['Content-Security-Policy'] = "default-src 'self'"
+
+    return response
 
 
 @permission_required('bookshelf.can_edit', raise_exception=True)

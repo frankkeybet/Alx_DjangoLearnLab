@@ -10,9 +10,6 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
-
-
-
 # Create your views here.
 class BookList(generics.ListAPIView):
     queryset = Book.objects.all()

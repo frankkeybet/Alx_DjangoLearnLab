@@ -37,7 +37,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     - many=True means an author can have multiple books.
     - read_only=True ensures books are not directly created via AuthorSerializer.
     """
-    books = BookSerializer(many=True ,read_only=True)
+    books = BookSerializer(many=True, read_only=True)
 
     class Meta:
            model= Author

@@ -6,8 +6,17 @@
 <p><strong>Author:</strong> {{ post.author.username }}</p>
 <p><strong>Published:</strong> {{ post.published_date }}</p>
 
+<hr>
+
 <p>{{ post.content }}</p>
 
-<a href="{% url 'posts' %}">Back to Posts</a>
+<hr>
+
+<a href="{% url 'posts' %}">⬅ Back to Posts</a>
+
+{% if user == post.author %}
+    | <a href="{% url 'post_edit' post.pk %}">✏ Edit</a>
+    | <a href="{% url 'post_delete' post.pk %}">🗑 Delete</a>
+{% endif %}
 
 {% endblock %}

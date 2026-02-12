@@ -7,7 +7,9 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .models import Post,Comment
+from .models import Post,Comment ,Tag
+from django.db.models import Q
+
 from .forms import RegisterForm, ProfileUpdateForm, PostForm ,CommentForm
 
 
@@ -49,6 +51,27 @@ def profile_view(request):
         form = ProfileUpdateForm(instance=request.user)
 
     return render(request, "blog/profile.html", {"form": form})
+
+def search_posts(request):
+    query = request.GET.get("q", "")
+    posts = Post.objects.all()
+
+    if query:
+        posts = posts.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+
+    return render(request, "blog/search_results.html", {"posts": posts, "query": query})
+
+
+def posts_by_tag(request, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    posts = Post.objects.filter(tags=tag)
+
+    return render(request, "blog/posts_by_tag.html", {"tag": tag, "posts": posts})
+
 
 
 # ---------------- BLOG CRUD VIEWS ----------------

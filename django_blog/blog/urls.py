@@ -1,5 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from .import views
 
 from .views import (
     home_view,
@@ -17,6 +18,8 @@ from .views import (
 
 urlpatterns = [
     path("", home_view, name="home"),
+    path("search/", views.search_posts, name="search_posts"),
+    path("tags/<str:tag_name>/", views.posts_by_tag, name="posts_by_tag"),
 
     # Blog CRUD (Checker Required)
     path("posts/", PostListView.as_view(), name="posts"),

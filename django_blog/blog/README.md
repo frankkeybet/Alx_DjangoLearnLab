@@ -37,3 +37,18 @@ The blog includes a comment feature that allows users to interact with posts.
 - Comment creation requires authentication.
 - Editing/deleting comments is restricted to the comment author.
 - CSRF protection is enforced on all forms.
+
+
+## Tagging System
+
+Tags are created automatically when a user types them in the Post form.
+Tags are separated by commas.
+Posts can have multiple tags.
+
+## Search System
+Search checks:
+Post title
+Post content
+
+## Tag names
+Uses Django Q() objects for flexible filtering.

@@ -8,6 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from .models import Post,Comment ,Tag
+from taggit.models import Tag
+
 from django.db.models import Q
 
 from .forms import RegisterForm, ProfileUpdateForm, PostForm ,CommentForm
@@ -82,6 +84,20 @@ class PostListView(ListView):
     ordering = ["-published_date"]
 
 
+class PostByTagListView(ListView):
+    model = Post
+    template_name = "blog/posts_by_tag.html"
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        tag_slug = self.kwargs.get("tag_slug")
+        return Post.objects.filter(tags__slug=tag_slug)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["tag"] = Tag.objects.get(slug=self.kwargs.get("tag_slug"))
+        return context
+    
 class PostDetailView(DetailView):
     model = Post
     template_name = "blog/post_detail.html"

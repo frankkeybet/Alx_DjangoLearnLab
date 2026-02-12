@@ -23,7 +23,7 @@
 
 <p><strong>Tags:</strong>
     {% for tag in object.tags.all %}
-        <a href="{% url 'posts_by_tag' tag.name %}">#{{ tag.name }}</a>
+       <a href="{% url 'posts_by_tag' tag.slug %}">#{{ tag.name }}</a>
     {% empty %}
         No tags
     {% endfor %}

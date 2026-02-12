@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Post, Comment ,Tag
+from taggit.forms import TagWidget
 
 
 class RegisterForm(UserCreationForm):
@@ -26,11 +27,9 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ["title" ,"content", "tags"]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        if self.instance.pk:
-            self.fields["tags"].initial = ", ".join([tag.name for tag in self.instance.tags.all()])
+    widgets = {
+            "tags": TagWidget(),
+        }
 
     def save(self, commit=True):
         post = super().save(commit=False)

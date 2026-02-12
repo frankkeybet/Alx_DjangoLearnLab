@@ -30,9 +30,7 @@ class PostForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if self.instance.pk:
-            self.fields["tags"].initial = ", ".join(
-                [tag.name for tag in self.instance.tags.all()]
-            )
+            self.fields["tags"].initial = ", ".join([tag.name for tag in self.instance.tags.all()])
 
     def save(self, commit=True):
         post = super().save(commit=False)

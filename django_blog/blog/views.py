@@ -80,7 +80,7 @@ class PostByTagListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["tag"] = Tag.objects.get(slug=self.kwargs.get("tag_slug"))
+        context["tag"] = get_object_or_404(Tag, slug=self.kwargs.get("tag_slug"))
         return context
 
 

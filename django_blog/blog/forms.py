@@ -28,24 +28,10 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ["title", "content", "tags"]
         widgets = {
-            "tags": TagWidget(),
+            "tags": TagWidget(attrs={"placeholder": "Add tags separated by commas"})
         }
 
-    def save(self, commit=True):
-        post = super().save(commit=False)
-        if commit:
-            post.save()
 
-        # Handle tags
-        tags_str = self.cleaned_data.get("tags", "")
-        tag_names = [t.strip() for t in tags_str.split(",") if t.strip()]
-
-        post.tags.clear()
-        for name in tag_names:
-            tag, _ = post.tags.model.objects.get_or_create(name=name)
-            post.tags.add(tag)
-
-        return post
 
 
 # ---------------- COMMENT FORM ----------------

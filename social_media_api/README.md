@@ -44,3 +44,23 @@ GET /api/comments/
 POST /api/comments/
 Authorization: Token <token>
 
+
+## Follow System
+
+### Follow a user
+POST /api/accounts/follow/<user_id>/
+Authorization: Token <token>
+
+### Unfollow a user
+POST /api/accounts/unfollow/<user_id>/
+Authorization: Token <token>
+
+---
+
+## Feed
+
+### Get feed posts
+GET /api/feed/
+Authorization: Token <token>
+
+Returns posts from users that the authenticated user follows.

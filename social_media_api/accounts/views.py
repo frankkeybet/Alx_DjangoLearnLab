@@ -1,8 +1,8 @@
 from rest_framework import generics, status,permissions
 from rest_framework.response import Response
-#from rest_framework.permissions import AllowAny ,IsAuthenticated
+from rest_framework.permissions import AllowAny ,IsAuthenticated
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view ,permission_classes
+#from rest_framework.decorators import api_view ,permission_classes
 
 from .serializers import RegisterSerializer, UserSerializer ,LoginSerializer
 from django.contrib.auth import authenticate
@@ -73,11 +73,11 @@ class LoginView(generics.GenericAPIView):
 
 
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])
+@permission_classes([permissions.IsAuthenticated])
 def follow_user(request, user_id):
     try:
-        user_to_follow = User.objects.get(id=user_id)
-    except User.DoesNotExist:
+        user_to_follow = CustomUser.objects.get(id=user_id)
+    except CustomUser.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
     if user_to_follow == request.user:
@@ -88,11 +88,11 @@ def follow_user(request, user_id):
 
 
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])
+@permission_classes([permissions.IsAuthenticated])
 def unfollow_user(request, user_id):
     try:
-        user_to_unfollow = User.objects.get(id=user_id)
-    except User.DoesNotExist:
+        user_to_unfollow = CustomUser.objects.get(id=user_id)
+    except CustomUser.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
     request.user.following.remove(user_to_unfollow)

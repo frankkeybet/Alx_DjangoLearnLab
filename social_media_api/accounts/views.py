@@ -12,9 +12,9 @@ User = get_user_model()
 
 
 class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -23,14 +23,18 @@ class RegisterView(generics.CreateAPIView):
 
         token, created = Token.objects.get_or_create(user=user)
 
-        return Response({
-            "user": UserSerializer(user).data,
-            "token": token.key
-        }, status=status.HTTP_201_CREATED)
-    
+        return Response(
+            {
+                "user": UserSerializer(user).data,
+                "token": token.key
+            },
+            status=status.HTTP_201_CREATED
+        )
+
+
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [permissions.AllowAny]
 
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -56,6 +60,15 @@ class LoginView(generics.GenericAPIView):
             },
             status=status.HTTP_200_OK
         )
+
+
+# class ProfileView(generics.RetrieveUpdateAPIView):
+#     queryset = CustomUser.objects.all()
+#     serializer_class = UserSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+
+#     def get_object(self):
+#         return self.request.user
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])

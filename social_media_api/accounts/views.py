@@ -7,6 +7,8 @@ from rest_framework.decorators import api_view ,permission_classes
 from .serializers import RegisterSerializer, UserSerializer ,LoginSerializer
 from django.contrib.auth import authenticate
 from .models import CustomUser
+from notifications.models import Notification
+
 
 
 #User = get_user_model()
@@ -85,6 +87,8 @@ def follow_user(request, user_id):
 
     request.user.following.add(user_to_follow)
     return Response({"message": f"You are now following {user_to_follow.username}"}, status=status.HTTP_200_OK)
+
+    
 
 
 @api_view(["POST"])

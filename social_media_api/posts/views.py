@@ -41,17 +41,13 @@ class CommentViewSet(viewsets.ModelViewSet):
 @api_view(["POST"])
 @permission_classes([permissions.IsAuthenticated])
 def like_post(request, pk):
-    try:
-        post = Post.objects.get(pk=pk)
-    except Post.DoesNotExist:
-        return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
+    post = generics.get_object_or_404(Post, pk=pk)
 
     like, created = Like.objects.get_or_create(user=request.user, post=post)
 
     if not created:
         return Response({"message": "You already liked this post"}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Create notification
     if post.author != request.user:
         Notification.objects.create(
             recipient=post.author,
@@ -66,10 +62,7 @@ def like_post(request, pk):
 @api_view(["POST"])
 @permission_classes([permissions.IsAuthenticated])
 def unlike_post(request, pk):
-    try:
-        post = Post.objects.get(pk=pk)
-    except Post.DoesNotExist:
-        return Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
+    post = generics.get_object_or_404(Post, pk=pk)
 
     like = Like.objects.filter(user=request.user, post=post).first()
 

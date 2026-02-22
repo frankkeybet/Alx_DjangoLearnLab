@@ -33,5 +33,5 @@ class LoginSerializer(serializers.Serializer):
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = get_user_model
+        model = User
         fields = ["id", "username", "email", "bio", "profile_picture"]
